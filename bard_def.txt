@@ -1,0 +1,96 @@
+# Syntax and Code Definition
+
+Keywords
+FN		Function
+IF		If Statement
+ELSE	ElseIf or Else
+OPUT	Print
+LOOP	Loop (For or While)
+OPEN	Open File
+RE		Regular Expression
+CLS		Class
+#LN		Length
+#IN		Find - Returns -1 (not found) 0 -> Position
+DATE	Date
+			d=Day(1-31) 		/ m=Month(1-12)		/ y=Year(xx)
+			D=Weekday(1-7) 		/ M=Month(Jan-Dec)	/ Y=Year(xxxx)
+			w=Week(1-52)		/ W=Weekday(Mo-Su)
+			h=Hour(1-12am/pm)	/ H=Hour(1-24)
+			n=Minutes(0-59)		/ s=Seconds(0-59)
+			l=LeapYear(True or False)
+#LF		Left
+#RG		Right
+#MD		Mid
+STR 	String (Value,param1,param2)
+NUM		Number (Value,param1)
+			Param1 = Number of Decumal Places 
+			0 = Integer 
+			1+ = Float 
+			Negative Numbers = Absolute Floats
+#IT		Integer
+#FL		Float
+#ST		String
+RTN		Return
+#TR		Trim
+#UC		Uppercase
+#LC		Lowercase
+CASE 	String Case (Value,Param1)
+IPUT	Input
+IMP		Import modules
+TYPE	Type of Object
+
+Syntax
+FN	KEYWORD INDENTIFIER(IDENTIFIER|INDENTIFIER,*)
+IF	KEYWORD 
+EL	ElseIf or Else
+PR	Print
+LP	Loop (For or While)
+OP	Open File
+RE	Regular Expression
+CL	Class
+LN	Length
+IN	Find - Returns -1 (not found) 0 -> Position
+DT	Date
+LF	Left
+RG	Right
+MD	Mid
+IT	Integer
+FL	Float
+ST	String
+RT	Return
+TR	Trim
+UC	Uppercase
+LC	Lowercase
+IP	Input
+IM	Import modules
+
+Operators
+=	Equals
++	Plus
+-	Minus
+*	Multiply
+/	Divide
+>	Greater Than
+<	Less Than
+|	Modulus
+%	Percentage
+^	Power
+!	Not
+==	Equal To
+!=	Not Equal To
++=	Increment by One
+-=	Decrement by One
+*=	Square
+/=	Square Root
+&&	And
+||	Or
+
+Punctuation
+(	LPAREN
+)	RPAREN
+[	LBRACE
+]	RBRACE
+
+Ignore
+#	Comments
+
