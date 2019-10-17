@@ -88,7 +88,9 @@ class bard_eval:
 					looplogic=self.eval_code(evalstr[3][0])[1]
 				
 				if looplogic==True:
-					print("end")
+					self.eval_codebody(evalstr[4])
+					
+					env.env_local[loopid[1]][1]+=loopincrement
 				else:
 					self.loopbegin=False
 					
@@ -109,11 +111,12 @@ class bard_eval:
 					else:
 						self.eval_assignment(funcparams[p][1],("String",""),"")
 						
-				for line in range(0,len(funcbody)):
-					a=self.eval_code(funcbody[line])
-					if a is not None: return a
+				self.eval_codebody(funcbody)
+						
+				#for line in range(0,len(funcbody)):
+				#	a=self.eval_code(funcbody[line])
+				#	if a is not None: return a
 			else:
-				#print(evalstr)
 				return None
 		else:
 			return evalstr
@@ -154,7 +157,6 @@ class bard_eval:
 		elif op[1]=="!=":	#Not Equal To
 			result=argleft != argright
 
-
 		if type(result)==float:
 			return ("Number",result)
 		elif type(result)==bool:
@@ -164,7 +166,6 @@ class bard_eval:
 
 	def eval_call(self):
 		pass
-
 
 	def eval_assignment(self,obj,args1,args2):
 		if args1!=None:
@@ -176,4 +177,9 @@ class bard_eval:
 			else:
 				env.env_local[obj]=self.eval_code(args1)
 
-
+	def eval_codebody(self,codebody):
+		for line in range(0,len(codebody)):
+			rtnstate=self.eval_code(codebody[line])
+		
+			if rtnstate is not None: 
+				return rtnstate
