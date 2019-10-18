@@ -37,7 +37,7 @@ class bard_parser:
 				else:
 					tok_next=self.parsetoken(None)
 
-					if tok_value=="=":
+					if tok_value in ["=","+=","-=","*=","/="]:
 						return ((env.currentline+1, "Assignment", tok_prev,tok_next,None))
 					elif tok_value in "+-*/^%==!==><=":
 						return ((env.currentline+1, "Operation", (tok_type,tok_value),tok_prev,tok_next))

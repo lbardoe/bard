@@ -22,7 +22,7 @@ class bard_lex():
 				if txt[0:1]=="-" and txt[1:2] in "0123456789":
 					yield (self.get_more(self.tok_digits))
 				else:
-					if txt[1:2] in ["+=","-=","*=","/=","<=",">=","&&","!=","=="]:
+					if txt[0:2] in ["+=","-=","*=","/=","<=",">=","&&","!=","=="]:
 						tok_value += txt[1:2]
 					
 					yield ("OPERATOR", tok_value)

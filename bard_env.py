@@ -7,5 +7,5 @@ prog=[]
 currentline=0
 
 #Store a list of BARD Keywords.
-token_kywd=["FN","IF","ELSE","OPUT","LOOP","FILE","CLS","DATE","STR","NUM","RTN","CASE","IPUT","IMP","TYPE"]
+token_kywd=["IF","ELSE","PUT","LOOP","FILE","DATE","STR","NUM","RTN","CASE","GET","IMP","TYPE"]
 

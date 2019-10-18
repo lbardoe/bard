@@ -48,7 +48,7 @@ class bard_eval:
 
 			callval=self.eval_code(evalstr[3][0])
 			
-			if evalstr[2][1]=="OPUT":
+			if evalstr[2][1]=="PUT":
 				print(callval[1])
 			elif evalstr[2][1]=="STR":
 				return (callval[0],str(callval[1]).strip())
@@ -59,38 +59,45 @@ class bard_eval:
 			elif evalstr[2][1]=="RTN":
 				return self.eval_code(callval)
 			elif evalstr[2][1]=="LOOP":
-				if self.loopbegin==False:
-					if len(evalstr[3])>1:
-						loopid=evalstr[3][0]
-						loopstart=self.eval_code(evalstr[3][1])
-						loopend=self.eval_code(evalstr[3][2])
-						
-						if len(evalstr[3])==4:
-							loopincrement=int((evalstr[3][3])[1])
-						else:
-							loopincrement=1
-						
-						if loopstart>loopend:
-							loopincrement=abs(loopincrement)
-						else:
-							loopincrement=abs(loopincrement)
-					else:
-						loopid=(evalstr[3][0])[3][1]
-						loopstart=("Number",0)
-						loopincrement=0
+				if len(evalstr[3])==4:
+					loopincrement=int((evalstr[3][3])[1])
+				else:
+					loopincrement=1
 
+				if len(evalstr[3])>1:
+					loopid=evalstr[3][0]
+					loopstart=self.eval_code(evalstr[3][1])
+					loopend=self.eval_code(evalstr[3][2])
+				else:
+					loopid=(evalstr[3][0])[3][1]
+					loopstart=("Number",1.0)
+					loopend=("Number",2.0)
+					loopincrement=0
+					
+				if loopstart>loopend:
+					optype=">="
+					loopincrement=abs(loopincrement)*-1
+				else:
+					optype="<="
+					loopincrement=abs(loopincrement)
+
+				if self.loopbegin==False:
 					self.eval_assignment(loopid[1],loopstart,None)
 					self.loopbegin=True
 
 				if len(evalstr[3])>1:
-					looplogic=self.eval_operation(("Operator","<="),self.eval_code(loopid),loopend)[1]
+					looplogic=self.eval_operation(("Operator",optype),self.eval_code(loopid),loopend)[1]
 				else:
 					looplogic=self.eval_code(evalstr[3][0])[1]
 				
 				if looplogic==True:
 					self.eval_codebody(evalstr[4])
+
+					loopvalue=(env.env_local[loopid[1]][1])+loopincrement
+
+					env.env_local[loopid[1]] = ("Number",loopvalue)
 					
-					env.env_local[loopid[1]][1]+=loopincrement
+					self.eval_code(evalstr)
 				else:
 					self.loopbegin=False
 					
@@ -124,7 +131,7 @@ class bard_eval:
 
 	def eval_operation(self,op,arg1,arg2):
 		result=""
-		print("OP: ",arg1,arg2)
+		#print("OP: ",arg1,arg2)
 		if arg1[0]!=arg2[0]:
 			argleft=str(arg1[1])
 			argright=str(arg2[1])

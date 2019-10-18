@@ -1,15 +1,18 @@
 # Syntax and Code Definition
 
 Keywords
-FN		Function
+#FN		Function
 IF		If Statement
 ELSE	ElseIf or Else
-OPUT	Print
+PUT		Print to screen
 LOOP	Loop (For or While)
-OPEN	Open File
-RE		Regular Expression
-CLS		Class
-#LN		Length
+FILE	Open File
+WEB		Get File from Web Site
+MAIL	Send Email
+SFTP	Transfer File
+#RE		Regular Expression
+#CLS		Class
+LEN		Length
 #IN		Find - Returns -1 (not found) 0 -> Position
 DATE	Date
 			d=Day(1-31) 		/ m=Month(1-12)		/ y=Year(xx)
@@ -35,7 +38,7 @@ RTN		Return
 #UC		Uppercase
 #LC		Lowercase
 CASE 	String Case (Value,Param1)
-IPUT	Input
+GET		Input
 IMP		Import modules
 TYPE	Type of Object
 

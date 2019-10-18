@@ -1,6 +1,8 @@
 # bard
 BARD Programming Language Interpreter (PYTHON)
 
+#### To Code or Not To Code ####
+
 This program is written in Python to Interpret my own language called BARD.
 
 BARD stands for Basic and Reduced Definition.
