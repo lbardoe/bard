@@ -1,3 +1,5 @@
+#Ignore
+
 import os
 import bard_env as env
 import datetime
@@ -20,9 +22,10 @@ class bard_eval:
 			return ("String",evalstr[1])
 		elif evalstr[0]=="IDENTIFIER":
 			try:
-				if (evalstr[1])[0:1]=="$":
-					return env.env_global[evalstr[1]]
-				elif (evalstr[1])[0:1]=="_":
+				#if (evalstr[1])[0:1]=="$":
+				#	return env.env_global[evalstr[1]]
+				#el
+				if (evalstr[1])[0:1]=="_":
 					return self.eval_code((env.env_objects[evalstr[1]])[4][0])
 				else:
 					return env.env_local[evalstr[1]]
@@ -34,10 +37,10 @@ class bard_eval:
 			
 			return self.eval_operation(evalstr[2],argLeft,argRight)
 		elif evalstr[1]=="Assignment":
-			return self.eval_assignment(evalstr[2][1],evalstr[3],evalstr[4])
+			return self.eval_assignment(evalstr[2][1],self.eval_code(evalstr[3]),evalstr[4])
 		elif evalstr[1]=="Call":
 			callval=self.eval_code(evalstr[3][0])
-			
+
 			if evalstr[2][1]=="PUT":
 				print(callval[1])
 			elif evalstr[2][1]=="STR":
@@ -59,7 +62,7 @@ class bard_eval:
 					loopstart=self.eval_code(evalstr[3][1])
 					loopend=self.eval_code(evalstr[3][2])
 				else:
-					loopid=(evalstr[3][0])[3][1]
+					loopid=(evalstr[3][0])[3] #[1]
 					loopstart=("Number",1.0)
 					loopend=("Number",2.0)
 					loopincrement=0
@@ -70,10 +73,10 @@ class bard_eval:
 				else:
 					optype="<="
 					loopincrement=abs(loopincrement)
-
-				if self.loopbegin==False:
-					self.eval_assignment(loopid[1],loopstart,None)
-					self.loopbegin=True
+				
+				#if self.loopbegin==False:
+				self.eval_assignment(loopid[1],loopstart,None)
+				#	self.loopbegin=True
 				
 				looplogic=True
 				
@@ -88,9 +91,9 @@ class bard_eval:
 						looplogic=self.eval_operation(("Operator",optype),self.eval_code(loopid),loopend)[1]
 					else:
 						looplogic=self.eval_code(evalstr[3][0])[1]
-			#elif evalstr[2][1]=="IPUT":
-				#n=(self.eval_code(callval))[1]
-				#print(n)
+			elif evalstr[2][1]=="GET":
+				n=(self.eval_code(callval))[1]
+				print(n)
 				#print(input("Name: "))
 				#print(a)
 				#return self.eval_code(("String",a))
@@ -105,7 +108,7 @@ class bard_eval:
 					else:
 						self.eval_assignment(funcparams[p][1],("String",""),"")
 						
-				self.eval_codebody(funcbody)
+				return self.eval_codebody(funcbody)
 			else:
 				return None
 		else:
@@ -158,25 +161,27 @@ class bard_eval:
 		pass
 
 	def eval_assignment(self,obj,args1,args2):
+		print(obj,args1)
 		if args1!=None:
 			if obj[0:1]=="_":
 				env.env_objects[obj]={"body" : args2,"params" : args1}
 				env.env_global[obj]={"type" : "function"}
-			elif obj[0:1]=="$":
-				env.env_global[obj]=self.eval_code(args1)
+			#elif obj[0:1]=="$":
+			#	env.env_global[obj]=self.eval_code(args1)
 			else:
-				varobj=self.eval_code(args1)
+				if args1[0] in ["Number","NUMBER"]:
+					varvalue=args1[1]
 
-				if varobj[0]=="Number":
-					varvalue=varobj[1]
-					
-					if args2=="+=":
-						varvalue+=float(args1[1])
-					elif args2=="-=":
-						varvalue-=float(args1[1])
-						
+					if args2 in ["+=","-=","*=","/="]:
+						origvalue=env.env_local[obj][1]
+
+						if args2=="+=":
+							varvalue=origvalue+varvalue
+						elif args2=="-=":
+							varvalue=origvalue-varvalue
+							
 					varobj=("Number",float(varvalue))
-
+					
 				env.env_local[obj]=varobj
 
 	def eval_codebody(self,codebody):

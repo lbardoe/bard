@@ -20,15 +20,10 @@ class bard_parser:
 		
 	def parsetoken(self,tok_prev):
 		try:
-			#print("Prev: ",tok_prev)
-			#Read Next Token into token variables.
 			tok_type,tok_value=next(self.tokens)
-			#print("Token:",tok_type,tok_value)
+
 			self.currenttoken=(tok_type,tok_value)
 			
-			#if tok_prev is None:
-			#	self.isfunc=False
-
 			if tok_type in ("NUMBER","IDENTIFIER","STRING") and tok_prev is None:
 				return self.parsetoken((tok_type, tok_value))
 			elif tok_type=="OPERATOR":
@@ -60,9 +55,6 @@ class bard_parser:
 
 				return self.function_params(tok_value)
 			else:
-				#if tok_value.upper()=="FN":
-				#	self.isfunc=True
-					
 				if tok_type in "KEYWORD,IDENTIFIER,FUNCTION":
 					return self.parsetoken((tok_type,tok_value))
 				else:
@@ -76,24 +68,16 @@ class bard_parser:
 		prev_param=""
 		
 		while self.currenttoken[1] not in "])":
-			#print(1,self.currenttoken[1])
 			if self.currenttoken[1] in "(,":
-				#print(2,self.currenttoken[1])
 				curr_param=self.parsetoken(None)
 			else:
-				#print(3,self.currenttoken[1])
 				curr_param=self.parsetoken(curr_param)
 
-			#print(4,self.currenttoken[1])
 			if self.currenttoken[1] in ",)":
-				#print(5,curr_param)
 				tok_params.append(curr_param)
-				
-			#print(6,self.currenttoken[1])
-			
-		#print(7,self.currenttoken[1])
+							
 		self.currenttoken=("End","End")
-		#print(self.currenttoken)
+
 		return(tok_params)
 
 	def function_body(self):
@@ -121,8 +105,9 @@ class bard_parser:
 
 				env.currentline+=1
 		except:
-			print("Body EOF")
+			pass
+			#print(env.currentline)
+			#print("Body EOF")
 			
-		#print(codebody[1])
 		return(codebody)
 
