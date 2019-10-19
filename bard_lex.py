@@ -32,7 +32,7 @@ class bard_lex():
 				self.tok_pos += 1
 			elif txt[0:1]=="#":	#Comments
 				self.tok_pos+=len(txt)
-			elif txt[0:1] in "\"'":	#Strings
+			elif txt[0:1] in "\"'":	#STRINGs
 				yield (self.get_more("\"'"))
 				self.tok_pos += 0
 			elif txt[0:1] in self.tok_digits:	#Digits

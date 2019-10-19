@@ -95,7 +95,7 @@ class bard_eval:
 				n=(self.eval_code(callval))[1]
 				#print(n)
 				a=raw_input(n)
-				print(a)
+
 				#return self.eval_code(("STRING",a))
 				#pass
 			elif evalstr[2][1][0:1]=="_":

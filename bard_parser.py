@@ -1,6 +1,6 @@
 #------------------------------------------------------------
 #Parses Tokens into format:- 
-#(Method Action, Line Number, Method Type,Action 1, Action 2)
+#(Method Action, Line NUMBER, Method Type,Action 1, Action 2)
 #------------------------------------------------------------
 #Method Actions:-
 #	Operation
