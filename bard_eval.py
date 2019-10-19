@@ -17,7 +17,7 @@ class bard_eval:
 		elif evalstr=="":
 			return None
 		elif evalstr[0]=="NUMBER":
-			return ("Number",float(evalstr[1]))
+			return ("NUMBER",float(evalstr[1]))
 		elif evalstr[0]=="STRING":
 			return ("String",evalstr[1])
 		elif evalstr[0]=="IDENTIFIER":
@@ -63,8 +63,8 @@ class bard_eval:
 					loopend=self.eval_code(evalstr[3][2])
 				else:
 					loopid=(evalstr[3][0])[3] #[1]
-					loopstart=("Number",1.0)
-					loopend=("Number",2.0)
+					loopstart=("NUMBER",1.0)
+					loopend=("NUMBER",2.0)
 					loopincrement=0
 					
 				if loopstart>loopend:
@@ -85,7 +85,7 @@ class bard_eval:
 
 					loopvalue=(env.env_local[loopid[1]][1])+loopincrement
 
-					env.env_local[loopid[1]] = ("Number",loopvalue)
+					env.env_local[loopid[1]] = ("NUMBER",loopvalue)
 					
 					if len(evalstr[3])>1:
 						looplogic=self.eval_operation(("Operator",optype),self.eval_code(loopid),loopend)[1]
@@ -151,7 +151,7 @@ class bard_eval:
 			result=argleft != argright
 
 		if type(result)==float:
-			return ("Number",result)
+			return ("NUMBER",result)
 		elif type(result)==bool:
 			return ("Boolean",result)
 		else:
@@ -169,7 +169,7 @@ class bard_eval:
 			#elif obj[0:1]=="$":
 			#	env.env_global[obj]=self.eval_code(args1)
 			else:
-				if args1[0] in ["Number","NUMBER"]:
+				if args1[0]=="NUMBER":
 					varvalue=args1[1]
 
 					if args2 in ["+=","-=","*=","/="]:
@@ -180,7 +180,7 @@ class bard_eval:
 						elif args2=="-=":
 							varvalue=origvalue-varvalue
 							
-					varobj=("Number",float(varvalue))
+					varobj=("NUMBER",float(varvalue))
 					
 				env.env_local[obj]=varobj
 
