@@ -52,7 +52,8 @@ class bard_parser:
 					elif tok_prev[1]=="LOOP":
 						return ((env.currentline+1,"Call",tok_prev,params,self.function_body(),None))
 					elif tok_prev[1] in ["IF","ELSE"]:
-						return ((env.currentline+1,"Call",tok_prev,params,self.function_body(),self.function_body()))
+						#return ((env.currentline+1,"Call",tok_prev,params,self.function_body(),self.function_body()))
+						return ((env.currentline+1,"Call",tok_prev,params,self.function_body(),self.parsetoken(None)))
 					else:
 						return ((env.currentline+1,"Call",tok_prev,params,None,None))
 
