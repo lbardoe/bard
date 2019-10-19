@@ -9,7 +9,7 @@ class bard_eval:
 		self.loopincrem=0
 		
 	def eval_code(self,evalstr):
-		#print("Test: ",evalstr)
+		#print("AST: ",evalstr)
 		if evalstr is None:
 			return None
 		elif evalstr=="":
@@ -34,18 +34,8 @@ class bard_eval:
 			
 			return self.eval_operation(evalstr[2],argLeft,argRight)
 		elif evalstr[1]=="Assignment":
-			if evalstr[2][0]=="FUNCTION":
-				return self.eval_assignment(evalstr[2][1],evalstr[3],evalstr[4])
-			else:
-				return self.eval_assignment(evalstr[2][1],evalstr[3],None)
+			return self.eval_assignment(evalstr[2][1],evalstr[3],evalstr[4])
 		elif evalstr[1]=="Call":
-			#print(evalstr[3])
-			#if evalstr[4] is not None:
-			#	funcbody=env.env_objects[evalstr[2][1]]["body"]
-				
-			#if evalstr[3] is not None:
-			#	funcparams=env.env_objects[evalstr[2][1]]["params"]
-
 			callval=self.eval_code(evalstr[3][0])
 			
 			if evalstr[2][1]=="PUT":
@@ -84,23 +74,20 @@ class bard_eval:
 				if self.loopbegin==False:
 					self.eval_assignment(loopid[1],loopstart,None)
 					self.loopbegin=True
-
-				if len(evalstr[3])>1:
-					looplogic=self.eval_operation(("Operator",optype),self.eval_code(loopid),loopend)[1]
-				else:
-					looplogic=self.eval_code(evalstr[3][0])[1]
 				
-				if looplogic==True:
+				looplogic=True
+				
+				while looplogic==True:
 					self.eval_codebody(evalstr[4])
 
 					loopvalue=(env.env_local[loopid[1]][1])+loopincrement
 
 					env.env_local[loopid[1]] = ("Number",loopvalue)
 					
-					self.eval_code(evalstr)
-				else:
-					self.loopbegin=False
-					
+					if len(evalstr[3])>1:
+						looplogic=self.eval_operation(("Operator",optype),self.eval_code(loopid),loopend)[1]
+					else:
+						looplogic=self.eval_code(evalstr[3][0])[1]
 			#elif evalstr[2][1]=="IPUT":
 				#n=(self.eval_code(callval))[1]
 				#print(n)
@@ -119,10 +106,6 @@ class bard_eval:
 						self.eval_assignment(funcparams[p][1],("String",""),"")
 						
 				self.eval_codebody(funcbody)
-						
-				#for line in range(0,len(funcbody)):
-				#	a=self.eval_code(funcbody[line])
-				#	if a is not None: return a
 			else:
 				return None
 		else:
@@ -131,7 +114,7 @@ class bard_eval:
 
 	def eval_operation(self,op,arg1,arg2):
 		result=""
-		#print("OP: ",arg1,arg2)
+		#print("OP: ",op,arg1,arg2)
 		if arg1[0]!=arg2[0]:
 			argleft=str(arg1[1])
 			argright=str(arg2[1])
@@ -182,7 +165,19 @@ class bard_eval:
 			elif obj[0:1]=="$":
 				env.env_global[obj]=self.eval_code(args1)
 			else:
-				env.env_local[obj]=self.eval_code(args1)
+				varobj=self.eval_code(args1)
+
+				if varobj[0]=="Number":
+					varvalue=varobj[1]
+					
+					if args2=="+=":
+						varvalue+=float(args1[1])
+					elif args2=="-=":
+						varvalue-=float(args1[1])
+						
+					varobj=("Number",float(varvalue))
+
+				env.env_local[obj]=varobj
 
 	def eval_codebody(self,codebody):
 		for line in range(0,len(codebody)):
