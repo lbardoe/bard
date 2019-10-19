@@ -1,19 +1,19 @@
 # Syntax and Code Definition
 
 Keywords
-#FN		Function
+TRUE	True Statement
+FALSE	False Statement
 IF		If Statement
 ELSE	ElseIf or Else
+GET		Input
 PUT		Print to screen
 LOOP	Loop (For or While)
 FILE	Open File
 WEB		Get File from Web Site
+NET		TCP/IP Network Connection
 MAIL	Send Email
 SFTP	Transfer File
-#RE		Regular Expression
-#CLS		Class
 LEN		Length
-#IN		Find - Returns -1 (not found) 0 -> Position
 DATE	Date
 			d=Day(1-31) 		/ m=Month(1-12)		/ y=Year(xx)
 			D=Weekday(1-7) 		/ M=Month(Jan-Dec)	/ Y=Year(xxxx)
@@ -21,24 +21,14 @@ DATE	Date
 			h=Hour(1-12am/pm)	/ H=Hour(1-24)
 			n=Minutes(0-59)		/ s=Seconds(0-59)
 			l=LeapYear(True or False)
-#LF		Left
-#RG		Right
-#MD		Mid
 STR 	String (Value,param1,param2)
 NUM		Number (Value,param1)
 			Param1 = Number of Decumal Places 
 			0 = Integer 
 			1+ = Float 
 			Negative Numbers = Absolute Floats
-#IT		Integer
-#FL		Float
-#ST		String
 RTN		Return
-#TR		Trim
-#UC		Uppercase
-#LC		Lowercase
 CASE 	String Case (Value,Param1)
-GET		Input
 IMP		Import modules
 TYPE	Type of Object
 
@@ -68,9 +58,9 @@ IP	Input
 IM	Import modules
 
 Operators
-=	Equals
-+	Plus
--	Minus
+=	Assignment
++	Addition
+-	Subtraction
 *	Multiply
 /	Divide
 >	Greater Than
@@ -93,6 +83,10 @@ Punctuation
 )	RPAREN
 [	LBRACE
 ]	RBRACE
+
+Functions/Methods And Classes
+$	Function and Method Definition
+@	Class Definition
 
 Ignore
 #	Comments
