@@ -2,6 +2,7 @@
 env_global={}
 env_local={}
 env_objects={}
+env_debug=False
 
 prog=[]
 currentline=0

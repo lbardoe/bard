@@ -11,7 +11,8 @@ class bard_eval:
 		self.loopincrem=0
 		
 	def eval_code(self,evalstr):
-		#print("AST: ",evalstr)
+		if env.env_debug==True: print("AST: ",evalstr)
+		
 		if evalstr is None:
 			return None
 		elif evalstr=="":
@@ -51,7 +52,13 @@ class bard_eval:
 				return ("DateTime",datetime.datetime.now())
 			elif evalstr[2][1]=="RTN":
 				return self.eval_code(callval)
+			elif evalstr[2][1] in ["IF","ELSE"]:
+				if (self.eval_code(evalstr[3][0]))[1]:
+					return self.eval_code(evalstr[4][0])
+				else:
+					return self.eval_code(evalstr[5][0])
 			elif evalstr[2][1]=="LOOP":
+				#pprint.pprint(evalstr)
 				if len(evalstr[3])==4:
 					loopincrement=int((evalstr[3][3])[1])
 				else:
@@ -92,12 +99,14 @@ class bard_eval:
 					else:
 						looplogic=self.eval_code(evalstr[3][0])[1]
 			elif evalstr[2][1]=="GET":
-				n=(self.eval_code(callval))[1]
-				#print(n)
-				a=raw_input(n)
-
-				#return self.eval_code(("STRING",a))
-				#pass
+				try:
+					caption=(self.eval_code(callval))[1]
+				except:
+					caption=""
+					
+				#a=raw_input(n)
+				
+				return self.eval_code(("STRING",input(caption)))
 			elif evalstr[2][1][0:1]=="_":
 				funcbody=env.env_objects[evalstr[2][1]]["body"]
 				funcparams=env.env_objects[evalstr[2][1]]["params"]

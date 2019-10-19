@@ -1,8 +1,8 @@
 #------------------------------------------------------------
-#Parses Tokens into format:- 
-#(Method Action, Line NUMBER, Method Type,Action 1, Action 2)
+# Parses Tokens into format:- 
+# (Line No,Method Action, Method Type,Action 1, Action 2,Action 3)
 #------------------------------------------------------------
-#Method Actions:-
+# Method Actions:-
 #	Operation
 #	Assignment
 #	Logical
@@ -11,6 +11,7 @@
 
 import bard_lex
 import bard_env as env
+import pprint
 
 class bard_parser:
 	def __init__(self,tokens):
@@ -33,11 +34,11 @@ class bard_parser:
 					tok_next=self.parsetoken(None)
 
 					if tok_value in ["=","+=","-=","*=","/="]:
-						return ((env.currentline+1, "Assignment", tok_prev,tok_next,tok_value))
+						return ((env.currentline+1, "Assignment", tok_prev,tok_next,tok_value,None))
 					elif tok_value in "+-*/^%==!==><=":
-						return ((env.currentline+1, "Operation", (tok_type,tok_value),tok_prev,tok_next))
+						return ((env.currentline+1, "Operation", (tok_type,tok_value),tok_prev,tok_next,None))
 					elif tok_value in "&&||":
-						return ((env.currentline+1,"Logical", (tok_type,tok_value),tok_prev,tok_next))
+						return ((env.currentline+1,"Logical", (tok_type,tok_value),tok_prev,tok_next,None))
 			elif tok_value in ",])":
 				return tok_prev
 			elif tok_value in "(":
@@ -47,11 +48,13 @@ class bard_parser:
 					params=self.function_params()
 					
 					if tok_prev[0]=="FUNCTION":
-						return ((env.currentline+1,"Assignment",tok_prev,params,self.function_body()))
+						return ((env.currentline+1,"Assignment",tok_prev,params,self.function_body(),None))
 					elif tok_prev[1]=="LOOP":
-						return ((env.currentline+1,"Call",tok_prev,params,self.function_body()))
+						return ((env.currentline+1,"Call",tok_prev,params,self.function_body(),None))
+					elif tok_prev[1] in ["IF","ELSE"]:
+						return ((env.currentline+1,"Call",tok_prev,params,self.function_body(),self.function_body()))
 					else:
-						return ((env.currentline+1,"Call",tok_prev,params,None))
+						return ((env.currentline+1,"Call",tok_prev,params,None,None))
 
 				return self.function_params(tok_value)
 			else:
@@ -87,27 +90,29 @@ class bard_parser:
 
 		while env.prog[env.currentline][spos:spos+1]=="\t":
 			indent+="\t"
-			
+			spos+=1
+	
 		try:
 			while True:
-				if env.prog[env.currentline+1].strip()=="":
+				env.currentline+=1
+				print(env.currentline)
+
+				if env.prog[env.currentline].strip()=="":
 					pass
-				elif env.prog[env.currentline+1][0:len(indent)]==indent:
-					lex=bard_lex.bard_lex(env.prog[env.currentline+1])
+				elif env.prog[env.currentline][0:len(indent)]==indent:
+					lex=bard_lex.bard_lex(env.prog[env.currentline])
 					p=bard_parser(lex.tokenize())
-					
+
 					funbody=p.parsetoken(None)
 					
 					if funbody is not None:
 						codebody.append(funbody)
 				else:
+					print(env.currentline)
 					break
 
-				env.currentline+=1
 		except:
 			pass
-			#print(env.currentline)
-			#print("Body EOF")
 			
 		return(codebody)
 

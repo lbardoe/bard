@@ -36,12 +36,15 @@ def ide():
 def err(e):
 	print(e)
 
-#run("example1.2b")
-run("example2.2b")
+run("example1.2b")
+#run("example2.2b")
 #run("example3.2b")
 #run("example4.2b")
 
-print("-->Program Start: {}".format(datetime.datetime.now()) + "\n")
+env.env_debug=True
+
+if env.env_debug==True:
+	print("-->Program Start: {}".format(datetime.datetime.now()) + "\n")
 
 lineno=0
 
@@ -62,9 +65,10 @@ while env.currentline < len(env.prog):
 
 	env.currentline+=1
 
-print("\n")
-print("Globals: ",env.env_global)
-print("Locals: ",env.env_local)
-#print("Objects: ",env.env_objects)
-print("\n-->Program End: {}".format(datetime.datetime.now()))
+if env.env_debug==True:
+	print("\n")
+	print("Globals: ",env.env_global)
+	print("Locals: ",env.env_local)
+	#print("Objects: ",env.env_objects)
+	print("\n-->Program End: {}".format(datetime.datetime.now()))
 
