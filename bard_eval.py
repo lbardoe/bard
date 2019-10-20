@@ -11,7 +11,7 @@ class bard_eval:
 		self.loopincrem=0
 		
 	def eval_code(self,evalstr):
-		if env.env_debug==True: print("AST: ",evalstr)
+		#if env.env_debug==True: print("AST: ",evalstr)
 		
 		if evalstr is None:
 			return None
@@ -53,6 +53,7 @@ class bard_eval:
 			elif evalstr[2][1]=="RTN":
 				return self.eval_code(callval)
 			elif evalstr[2][1] in ["IF","ELSE"]:
+				pprint.pprint(evalstr)
 				if (self.eval_code(evalstr[3][0]))[1]:
 					return self.eval_code(evalstr[4][0])
 				else:

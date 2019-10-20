@@ -36,9 +36,9 @@ def ide():
 def err(e):
 	print(e)
 
-#run("example1.2b")
+run("example1.2b")
 #run("example2.2b")
-run("example3.2b")
+#run("example3.2b")
 #run("example4.2b")
 
 env.env_debug=True
@@ -49,13 +49,13 @@ if env.env_debug==True:
 lineno=0
 
 while env.currentline < len(env.prog):
-	lexer = bard_lex.bard_lex(env.prog[env.currentline])
+	lexer = bard_lex.bard_lex(env.prog[env.currentline-1])
 	parser=bard_parser.bard_parser(lexer.tokenize())
 
 	a=parser.parsetoken(None)
 
 	if type(a)==tuple:
-		#print("Code Line: " + env.prog[env.currentline])
+		#print("Code Line: " + env.prog[env.currentline-1])
 		#pprint.pprint(a)
 
 		codeev=bard_eval.bard_eval()
