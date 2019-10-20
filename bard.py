@@ -36,9 +36,9 @@ def ide():
 def err(e):
 	print(e)
 
-run("example1.2b")
+#run("example1.2b")
 #run("example2.2b")
-#run("example3.2b")
+run("example3.2b")
 #run("example4.2b")
 
 env.env_debug=True

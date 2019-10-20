@@ -40,6 +40,7 @@ class bard_eval:
 		elif evalstr[1]=="Assignment":
 			return self.eval_assignment(evalstr[2][1],self.eval_code(evalstr[3]),evalstr[4])
 		elif evalstr[1]=="Call":
+			#print(evalstr[3])
 			callval=self.eval_code(evalstr[3][0])
 
 			if evalstr[2][1]=="PUT":
@@ -57,7 +58,8 @@ class bard_eval:
 				if (self.eval_code(evalstr[3][0]))[1]:
 					return self.eval_code(evalstr[4][0])
 				else:
-					return self.eval_code(evalstr[5][0])
+					print(evalstr[5])
+					return self.eval_code(evalstr[5])
 			elif evalstr[2][1]=="LOOP":
 				#pprint.pprint(evalstr)
 				if len(evalstr[3])==4:
@@ -197,8 +199,10 @@ class bard_eval:
 				env.env_local[obj]=varobj
 
 	def eval_codebody(self,codebody):
-		for line in range(0,len(codebody)):
-			rtnstate=self.eval_code(codebody[line])
-		
-			if rtnstate is not None: 
-				return rtnstate
+		if codebody!=None:
+			for line in range(0,len(codebody)):
+				rtnstate=self.eval_code(codebody[line])
+			
+				if rtnstate is not None: 
+					return rtnstate
+		return None

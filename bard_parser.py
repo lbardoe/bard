@@ -59,16 +59,15 @@ class bard_parser:
 				return self.function_params(tok_value)
 			else:
 				if tok_type in "KEYWORD,IDENTIFIER,FUNCTION":
-					#if tok_value=="ELSE":
-					#	return ((env.currentline,"Call",(tok_type,tok_value),None,self.function_body(),None))
-					#else:
-						return self.parsetoken((tok_type,tok_value))
+					return self.parsetoken((tok_type,tok_value))
 				else:
 					return tok_prev
 		except:
-			#if tok_value=="ELSE":
-			#	return ((env.currentline,"Call",(tok_type,tok_value),None,self.function_body(),None))
-			#print("Test2")
+			if tok_prev==None:
+				pass
+			elif tok_prev[1]=="ELSE":
+				return ((env.currentline,"Call",tok_prev,("BOOLEAN",True),self.function_body(),None))
+
 			return tok_prev
 
 	def function_params(self):
@@ -99,17 +98,16 @@ class bard_parser:
 			spos+=1
 			
 		if (env.prog[env.currentline-1][0:len(indent)+3]).upper()=="ELSE" and elsestatement==True:
-			print("Code: ",env.prog[env.currentline-1])
+			#print("Code: ",env.prog[env.currentline-1])
 			lex=bard_lex.bard_lex(env.prog[env.currentline-1])
 			p=bard_parser(lex.tokenize())
 
 			return p.parsetoken(None)
-						
 			
 		try:
 			while True:
 				env.currentline+=1
-				print("CurrLine: ",env.currentline)
+				#print("CurrLine: ",env.currentline)
 
 				if env.prog[env.currentline-1].strip()=="":		#Check whether current is a blank line
 					pass
@@ -131,6 +129,6 @@ class bard_parser:
 		
 		if len(codebody)==0: codebody=None
 		
-		print("End: ",env.currentline)
+		#print("End: ",env.currentline)
 		return(codebody)
 
