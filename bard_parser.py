@@ -48,11 +48,11 @@ class bard_parser:
 					params=self.function_params()
 					
 					if tok_prev[0]=="FUNCTION":
-						return ((env.currentline,"Assignment",tok_prev,params,self.function_body(),None))
+						return ((env.currentline,"Assignment",tok_prev,params,self.code_block(),None))
 					elif tok_prev[1]=="LOOP":
-						return ((env.currentline,"Call",tok_prev,params,self.function_body(),None))
+						return ((env.currentline,"Call",tok_prev,params,self.code_block(),None))
 					elif tok_prev[1] in ["IF","ELSE"]:
-						return ((env.currentline,"Call",tok_prev,params,self.function_body(),self.function_body(True)))
+						return ((env.currentline,"Call",tok_prev,params,self.code_block(),self.code_block(True)))
 					else:
 						return ((env.currentline,"Call",tok_prev,params,None,None))
 
@@ -66,7 +66,7 @@ class bard_parser:
 			if tok_prev==None:
 				pass
 			elif tok_prev[1]=="ELSE":
-				return ((env.currentline,"Call",tok_prev,("BOOLEAN",True),self.function_body(),None))
+				return ((env.currentline,"Call",tok_prev,("BOOLEAN",True),self.code_block(),None))
 
 			return tok_prev
 
@@ -88,7 +88,7 @@ class bard_parser:
 
 		return(tok_params)
 
-	def function_body(self,elsestatement=False):
+	def code_block(self,elsestatement=False):
 		spos=0
 		indent="\t"
 		codebody=[]

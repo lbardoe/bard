@@ -54,7 +54,7 @@ class bard_eval:
 			elif evalstr[2][1]=="RTN":
 				return self.eval_code(callval)
 			elif evalstr[2][1] in ["IF","ELSE"]:
-				pprint.pprint(evalstr)
+				#pprint.pprint(evalstr)
 				if (self.eval_code(evalstr[3][0]))[1]:
 					return self.eval_code(evalstr[4][0])
 				else:
