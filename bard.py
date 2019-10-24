@@ -53,7 +53,7 @@ while env.currentline < len(env.prog):
 	parser=bard_parser.bard_parser(lexer.tokenize())
 
 	a=parser.parsetoken(None)
-
+	#print(env.currentline)
 	if type(a)==tuple:
 		#print("Code Line: " + env.prog[env.currentline-1])
 		#pprint.pprint(a)
