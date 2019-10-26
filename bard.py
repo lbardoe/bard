@@ -19,6 +19,7 @@ import bard_lex
 import bard_parser
 import bard_env as env
 import bard_eval
+#import bard_ide
 import datetime
 
 def run(filename):
@@ -28,20 +29,37 @@ def run(filename):
 			env.prog.append(line)
 	
 def interpreter():
-	pass
+	print("This feature is currently under developement.")
+	print()
+	#pass
 
 def ide():
-	pass
-
+	#bard_ide.open_ide()
+	print("This feature is currently under developement.")
+	print()
+	
 def err(e):
 	print(e)
 
-run("example1.2b")
+if len(sys.argv)==1:
+	interpreter()
+else:
+	if sys.argv[1]=="/d": 
+		env.env_debug=True
+		run(sys.argv[len(sys.argv)-1])
+	elif sys.argv[1]=="/l":
+		print("This feature is currently under developement.")
+		print()
+	elif sys.argv[1]=="/i":
+		ide()
+	else:
+		run(sys.argv[len(sys.argv)-1])
+	
+#run("example1.2b")
 #run("example2.2b")
 #run("example3.2b")
 #run("example4.2b")
 
-env.env_debug=True
 
 if env.env_debug==True:
 	print("-->Program Start: {}".format(datetime.datetime.now()) + "\n")
@@ -51,14 +69,9 @@ while env.currentline < len(env.prog):
 	parser=bard_parser.bard_parser(lexer.tokenize())
 
 	a=parser.parsetoken(None)
-	#print(env.currentline)
-	if type(a)==tuple:
-		#print("Code Line: " + env.prog[env.currentline-1])
-		#pprint.pprint(a)
 
+	if type(a)==tuple:
 		codeev=bard_eval.bard_eval()
-		
-		#print(codeev.eval_code(a)) #[1])
 		codeev.eval_code(a) #[1]
 
 	env.currentline+=1

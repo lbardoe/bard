@@ -33,7 +33,7 @@ class bard_parser:
 
 		try:
 			tok_type,tok_value=next(self.tokens)
-			#print(tok_type,tok_value)
+
 			self.currenttoken=(tok_type,tok_value)
 			
 			if tok_type in ("NUMBER","IDENTIFIER","STRING") and tok_prev is None:
@@ -59,16 +59,14 @@ class bard_parser:
 					return self.function_params(tok_value)
 				elif tok_prev[0] in "KEYWORD,IDENTIFIER,FUNCTION":
 					if tok_prev[1] in ["IF","ELSE","LOOP"] or tok_prev[0]=="FUNCTION":
-						#print(len(indent))
 						codebody1=self.code_block(indent)
 
 						if env.prog[env.currentline+1].strip()[0:4].upper()=="ELSE":
-							#print("ELSE")
 							codebody2=self.code_block(indent[0:len(indent)-1])
 							
 					if tok_prev[0]=="FUNCTION": action="Assignment"
 					#pprint.pprint((currline,action,tok_prev,params,codebody1,codebody2))
-					return ((env.currentline+1,action,tok_prev,params,codebody1,codebody2))
+					return ((currline+1,action,tok_prev,params,codebody1,codebody2))
 				return self.function_params(tok_value)
 			else:
 				if tok_type in "KEYWORD,IDENTIFIER,FUNCTION":
@@ -79,7 +77,7 @@ class bard_parser:
 			if tok_prev==None:
 				pass
 			elif tok_prev[1]=="ELSE":
-				return ((env.currentline+1,"Call",tok_prev,("BOOLEAN",True),self.code_block(),None))
+				return ((currline+1,"Call",tok_prev,("BOOLEAN",True),self.code_block(indent),None))
 
 			return tok_prev
 
@@ -103,29 +101,33 @@ class bard_parser:
 
 	def code_block(self,indent):
 		codebody=[]
-
+		temp=""
 		try:
 			while True:
 				env.currentline+=1
-
+				temp=env.prog[env.currentline].strip()
 				if env.prog[env.currentline].strip()=="":		#Check whether current is a blank line
+					print("Blank: ",env.currentline)
 					pass
 				elif env.prog[env.currentline][0:len(indent)]==indent: 
+					print("1")
 					lex=bard_lex.bard_lex(env.prog[env.currentline])
 					p=bard_parser(lex.tokenize())
 
 					funbody=p.parsetoken(None)
 					
 					if funbody is not None:
+						#print(funbody)
 						codebody.append(funbody)
 				else:
+					print("Break: ",env.currentline)
 					env.currentline-=1
 
 					break
 
 		except:
 			pass
-
+		#pprint.pprint(codebody)
 		if len(codebody)==0: 
 			return None
 		else:

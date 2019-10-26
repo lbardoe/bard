@@ -1,5 +1,3 @@
-#Ignore
-
 import os
 import bard_env as env
 import datetime
@@ -90,9 +88,7 @@ class bard_eval:
 					optype="<="
 					loopincrement=abs(loopincrement)
 				
-				#if self.loopbegin==False:
 				self.eval_assignment(loopid[1],loopstart,None)
-				#	self.loopbegin=True
 				
 				looplogic=True
 				
@@ -131,7 +127,6 @@ class bard_eval:
 				return None
 		else:
 			return evalstr
-
 
 	def eval_operation(self,op,arg1,arg2):
 		result=""

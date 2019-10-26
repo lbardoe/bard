@@ -1,8 +1,9 @@
 import tkinter
 
-root=tkinter.Tk()
+def open_ide():
+	root=tkinter.Tk()
 
-root.wm_title("BARD - IDE")
-root.geometry("500x500")
+	root.wm_title("BARD - IDE")
+	root.geometry("500x500")
 
-root.mainloop()
+	root.mainloop()

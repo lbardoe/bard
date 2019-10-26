@@ -1,3 +1,26 @@
+## Interface ##
+
+To use this Interpreter use the below commands
+
+## Commands ##
+---------------------------------------------------------------------------------
+bard.py <command line arguments>
+
+No Arguments Given
+	This will open the Interpreter Mode.
+	
+/d		
+	This will enable the debugger processes to show on screen.
+	
+/l <filename>
+	This will enable the output to be logged to a file.
+	
+/i
+	This will enable the IDE to put loaded.
+	
+<filename>
+	This will run the file listed 
+
 # Syntax and Code Definition
 
 ## Keywords ##
