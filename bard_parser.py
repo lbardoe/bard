@@ -41,11 +41,11 @@ class bard_parser:
 					tok_next=self.parsetoken(None)
 
 					if tok_value in ["=","+=","-=","*=","/="]:
-						return ((env.currentline, "Assignment", tok_prev,tok_next,tok_value,None))
+						return ((env.currentline+1, "Assignment", tok_prev,tok_next,tok_value,None))
 					elif tok_value in "+-*/^%==!==><=":
-						return ((env.currentline, "Operation", (tok_type,tok_value),tok_prev,tok_next,None))
+						return ((env.currentline+1, "Operation", (tok_type,tok_value),tok_prev,tok_next,None))
 					elif tok_value in "&&||":
-						return ((env.currentline,"Logical", (tok_type,tok_value),tok_prev,tok_next,None))
+						return ((env.currentline+1,"Logical", (tok_type,tok_value),tok_prev,tok_next,None))
 			elif tok_value in ",])":
 				return tok_prev
 			elif tok_value in "(":
@@ -63,7 +63,7 @@ class bard_parser:
 					
 					if tok_prev[0]=="FUNCTION": action="Assignment"
 
-					return ((env.currentline,action,tok_prev,params,codebody1,codebody2))
+					return ((env.currentline+1,action,tok_prev,params,codebody1,codebody2))
 				return self.function_params(tok_value)
 			else:
 				if tok_type in "KEYWORD,IDENTIFIER,FUNCTION":
@@ -74,7 +74,7 @@ class bard_parser:
 			if tok_prev==None:
 				pass
 			elif tok_prev[1]=="ELSE":
-				return ((env.currentline,"Call",tok_prev,("BOOLEAN",True),self.code_block(),None))
+				return ((env.currentline+1,"Call",tok_prev,("BOOLEAN",True),self.code_block(),None))
 
 			return tok_prev
 
@@ -105,11 +105,11 @@ class bard_parser:
 			while True:
 				env.currentline+=1
 				#print(env.prog[env.currentline])
-				if env.prog[env.currentline-1].strip()=="":		#Check whether current is a blank line
+				if env.prog[env.currentline].strip()=="":		#Check whether current is a blank line
 					pass
-				elif env.prog[env.currentline-1][0:len(indent)]==indent:
+				elif env.prog[env.currentline][0:len(indent)]==indent:
 					#print("CurrLineA: ",env.currentline,len(indent),env.prog[env.currentline-1])
-					lex=bard_lex.bard_lex(env.prog[env.currentline-1])
+					lex=bard_lex.bard_lex(env.prog[env.currentline])
 					p=bard_parser(lex.tokenize())
 
 					funbody=p.parsetoken(None)

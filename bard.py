@@ -49,7 +49,7 @@ if env.env_debug==True:
 lineno=0
 
 while env.currentline < len(env.prog):
-	lexer = bard_lex.bard_lex(env.prog[env.currentline-1])
+	lexer = bard_lex.bard_lex(env.prog[env.currentline])
 	parser=bard_parser.bard_parser(lexer.tokenize())
 
 	a=parser.parsetoken(None)
