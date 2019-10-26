@@ -36,17 +36,15 @@ def ide():
 def err(e):
 	print(e)
 
-#run("example1.2b")
+run("example1.2b")
 #run("example2.2b")
-run("example3.2b")
+#run("example3.2b")
 #run("example4.2b")
 
 env.env_debug=True
 
 if env.env_debug==True:
 	print("-->Program Start: {}".format(datetime.datetime.now()) + "\n")
-
-lineno=0
 
 while env.currentline < len(env.prog):
 	lexer = bard_lex.bard_lex(env.prog[env.currentline])
@@ -67,8 +65,9 @@ while env.currentline < len(env.prog):
 
 if env.env_debug==True:
 	print("\n")
-	print("Globals: ",env.env_global)
-	print("Locals: ",env.env_local)
+	print("-->Number of Keywords: ",len(env.token_kywd))
+	print("-->Globals: ",env.env_global)
+	print("-->Locals : ",env.env_local)
 	#print("Objects: ",env.env_objects)
 	print("\n-->Program End: {}".format(datetime.datetime.now()))
 

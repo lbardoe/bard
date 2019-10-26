@@ -3,6 +3,7 @@
 import os
 import bard_env as env
 import datetime
+import time
 import pprint
 
 class bard_eval:
@@ -11,7 +12,7 @@ class bard_eval:
 		self.loopincrem=0
 		
 	def eval_code(self,evalstr):
-		if env.env_debug==True: print("AST: ",evalstr)
+		#if env.env_debug==True: print("AST: ",evalstr)
 		
 		if evalstr is None:
 			return None
@@ -45,6 +46,13 @@ class bard_eval:
 
 			if evalstr[2][1]=="PUT":
 				print(callval[1])
+			elif evalstr[2][1]=="WAIT":
+				time.sleep(callval[1])
+			elif evalstr[2][1]=="ASCII":
+				if callval[0]=="STRING":
+					return ("NUMBER",ord(callval[1]))
+				else:
+					return ("STRING",chr(int(callval[1])))
 			elif evalstr[2][1]=="STR":
 				return (callval[0],str(callval[1]).strip())
 			elif evalstr[2][1]=="TYPE":
@@ -56,10 +64,11 @@ class bard_eval:
 			elif evalstr[2][1] in ["IF","ELSE"]:
 				#pprint.pprint((self.eval_code(evalstr[3][0]))[1])
 				if (self.eval_code(evalstr[3][0]))[1]:
-					return self.eval_code(evalstr[4][0])
+					self.eval_codebody(evalstr[4])
+					#return self.eval_code(evalstr[4][0])
 				else:
-					#print(evalstr[5])
-					return self.eval_code(evalstr[5])
+					self.eval_codebody(evalstr[5])
+					#return self.eval_code(evalstr[5][0])
 			elif evalstr[2][1]=="LOOP":
 				#pprint.pprint(evalstr)
 				if len(evalstr[3])==4:

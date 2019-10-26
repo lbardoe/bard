@@ -22,8 +22,12 @@ class bard_parser:
 	def parsetoken(self,tok_prev):
 		spos=0
 		indent="\t"
-		
-		while env.prog[env.currentline-1][spos:spos+1]=="\t":
+		codebody1=""
+		codebody2=""
+		currline=env.currentline
+		action="Call"
+					
+		while env.prog[env.currentline][spos:spos+1]=="\t":
 			indent+="\t"
 			spos+=1
 
@@ -54,22 +58,23 @@ class bard_parser:
 				if tok_prev is None:
 					return self.function_params(tok_value)
 				elif tok_prev[0] in "KEYWORD,IDENTIFIER,FUNCTION":
-					action="Call"
+					if tok_prev[1] in ["IF","ELSE","LOOP","FUNCTION"]:
+						#print(len(indent))
+						codebody1=self.code_block(indent)
 
-					codebody1=self.code_block(indent)
-					
-					if env.prog[env.currentline].strip()[0:4].upper()=="ELSE":
-						codebody2=self.code_block(indent)
-					
+						if env.prog[env.currentline+1].strip()[0:4].upper()=="ELSE":
+							#print("ELSE")
+							codebody2=self.code_block(indent[0:len(indent)-1])
+							
 					if tok_prev[0]=="FUNCTION": action="Assignment"
-
+					#pprint.pprint((currline,action,tok_prev,params,codebody1,codebody2))
 					return ((env.currentline+1,action,tok_prev,params,codebody1,codebody2))
 				return self.function_params(tok_value)
 			else:
 				if tok_type in "KEYWORD,IDENTIFIER,FUNCTION":
 					return self.parsetoken((tok_type,tok_value))
 				else:
-					return tok_prev
+					return tok_prev[1]
 		except:
 			if tok_prev==None:
 				pass
@@ -100,15 +105,15 @@ class bard_parser:
 		codebody=[]
 
 		#print(env.prog[env.currentline])
+		#print(env.currentline ,env.prog[env.currentline])
 
 		try:
 			while True:
 				env.currentline+=1
-				#print(env.prog[env.currentline])
+				#print(env.currentline ,env.prog[env.currentline])
 				if env.prog[env.currentline].strip()=="":		#Check whether current is a blank line
 					pass
-				elif env.prog[env.currentline][0:len(indent)]==indent:
-					#print("CurrLineA: ",env.currentline,len(indent),env.prog[env.currentline-1])
+				elif env.prog[env.currentline][0:len(indent)]==indent: #or "ELSE" in env.prog[env.currentline][0:len(indent)+3].upper():
 					lex=bard_lex.bard_lex(env.prog[env.currentline])
 					p=bard_parser(lex.tokenize())
 
@@ -126,9 +131,14 @@ class bard_parser:
 
 		except:
 			pass
-		
-		if len(codebody)==0: codebody=None
-		
-		#pprint.pprint(codebody)
-		return(codebody)
+		#print(len(codebody),codebody) 
+		if len(codebody)==0: 
+			return None
+		#elif len(codebody)==1:
+			#print(codebody)
+		#	return codebody[0]
+		else:
+			#print("1: ",codebody[0]) 
+			#print("2: ",codebody[1]) 
+			return(codebody)
 

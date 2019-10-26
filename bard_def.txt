@@ -31,6 +31,9 @@ RTN		Return
 CASE 	STRING Case (Value,Param1)
 IMP		Import modules
 TYPE	Type of Object
+WAIT	Sleep number of seconds
+ASCII 	Return either the Number of a Character or the Character of a Number
+
 
 Syntax
 FN	KEYWORD INDENTIFIER(IDENTIFIER|INDENTIFIER,*)
