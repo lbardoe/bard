@@ -62,13 +62,10 @@ class bard_eval:
 			elif evalstr[2][1]=="RTN":
 				return self.eval_code(callval)
 			elif evalstr[2][1] in ["IF","ELSE"]:
-				#pprint.pprint((self.eval_code(evalstr[3][0]))[1])
 				if (self.eval_code(evalstr[3][0]))[1]:
 					self.eval_codebody(evalstr[4])
-					#return self.eval_code(evalstr[4][0])
 				else:
 					self.eval_codebody(evalstr[5])
-					#return self.eval_code(evalstr[5][0])
 			elif evalstr[2][1]=="LOOP":
 				#pprint.pprint(evalstr)
 				if len(evalstr[3])==4:

@@ -58,7 +58,7 @@ class bard_parser:
 				if tok_prev is None:
 					return self.function_params(tok_value)
 				elif tok_prev[0] in "KEYWORD,IDENTIFIER,FUNCTION":
-					if tok_prev[1] in ["IF","ELSE","LOOP","FUNCTION"]:
+					if tok_prev[1] in ["IF","ELSE","LOOP"] or tok_prev[0]=="FUNCTION":
 						#print(len(indent))
 						codebody1=self.code_block(indent)
 
@@ -104,16 +104,13 @@ class bard_parser:
 	def code_block(self,indent):
 		codebody=[]
 
-		#print(env.prog[env.currentline])
-		#print(env.currentline ,env.prog[env.currentline])
-
 		try:
 			while True:
 				env.currentline+=1
-				#print(env.currentline ,env.prog[env.currentline])
+
 				if env.prog[env.currentline].strip()=="":		#Check whether current is a blank line
 					pass
-				elif env.prog[env.currentline][0:len(indent)]==indent: #or "ELSE" in env.prog[env.currentline][0:len(indent)+3].upper():
+				elif env.prog[env.currentline][0:len(indent)]==indent: 
 					lex=bard_lex.bard_lex(env.prog[env.currentline])
 					p=bard_parser(lex.tokenize())
 
@@ -121,24 +118,16 @@ class bard_parser:
 					
 					if funbody is not None:
 						codebody.append(funbody)
-						#env.currentline-=1
-						#print(env.currentline)
 				else:
-					#print(env.currentline,env.prog[env.currentline-1])
 					env.currentline-=1
-					#print(env.currentline,env.prog[env.currentline-1])
+
 					break
 
 		except:
 			pass
-		#print(len(codebody),codebody) 
+
 		if len(codebody)==0: 
 			return None
-		#elif len(codebody)==1:
-			#print(codebody)
-		#	return codebody[0]
 		else:
-			#print("1: ",codebody[0]) 
-			#print("2: ",codebody[1]) 
 			return(codebody)
 
