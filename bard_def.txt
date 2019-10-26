@@ -1,6 +1,59 @@
 # Syntax and Code Definition
 
-Keywords
+## Keywords ##
+---------------------------------------------------------------------------------
+TRUE	True Statement
+FALSE	False Statement
+IF		If Statement
+ELSE	ElseIf or Else
+GET		Input
+PUT		Print to screen
+LOOP	Loop (For or While)
+FILE	Open File
+WEB		Get File from Web Site
+NET		TCP/IP Network Connection
+MAIL	Send Email
+SFTP	Transfer File
+LEN		Length
+DATE	Date
+STR 	STRING (Value,param1,param2)
+NUM		NUMBER (Value,param1)
+RTN		Return
+CASE 	STRING Case (Value,Param1)
+IMP		Import modules
+TYPE	Type of Object
+WAIT	Sleep number of seconds
+ASCII 	Return either the Number of a Character or the Character of a Number
+
+
+## Syntax ##
+---------------------------------------------------------------------------------
+TRUE	True Statement
+FALSE	False Statement
+IF		If Statement
+ELSE	ElseIf or Else
+GET		Input
+PUT		Print to screen
+LOOP	Loop (For or While)
+FILE	Open File
+WEB		Get File from Web Site
+NET		TCP/IP Network Connection
+MAIL	Send Email
+SFTP	Transfer File
+LEN		Length
+DATE	Date
+STR 	STRING (Value,param1,param2)
+NUM		NUMBER (Value,param1)
+RTN		Return
+CASE 	STRING Case (Value,Param1)
+IMP		Import modules
+TYPE	Type of Object
+WAIT	Sleep number of seconds
+ASCII 	Return either the Number of a Character or the Character of a Number
+
+
+## Definition ##
+---------------------------------------------------------------------------------
 TRUE	True Statement
 FALSE	False Statement
 IF		If Statement
@@ -34,33 +87,8 @@ TYPE	Type of Object
 WAIT	Sleep number of seconds
 ASCII 	Return either the Number of a Character or the Character of a Number
 
-
-Syntax
-FN	KEYWORD INDENTIFIER(IDENTIFIER|INDENTIFIER,*)
-IF	KEYWORD 
-EL	ElseIf or Else
-PR	Print
-LP	Loop (For or While)
-OP	Open File
-RE	Regular Expression
-CL	Class
-LN	Length
-IN	Find - Returns -1 (not found) 0 -> Position
-DT	Date
-LF	Left
-RG	Right
-MD	Mid
-IT	Integer
-FL	Float
-ST	STRING
-RT	Return
-TR	Trim
-UC	Uppercase
-LC	Lowercase
-IP	Input
-IM	Import modules
-
-Operators
+## Operators ##
+---------------------------------------------------------------------------------
 =	Assignment
 +	Addition
 -	Subtraction
@@ -81,16 +109,19 @@ Operators
 &&	And
 ||	Or
 
-Punctuation
+## Punctuation ##
+---------------------------------------------------------------------------------
 (	LPAREN
 )	RPAREN
 [	LBRACE
 ]	RBRACE
 
-Functions/Methods And Classes
+## Functions/Methods And Classes ##
+---------------------------------------------------------------------------------
 $	Function and Method Definition
 @	Class Definition
 
-Ignore
+## Ignore ##
+---------------------------------------------------------------------------------
 #	Comments
 
