@@ -146,5 +146,5 @@ $	Function and Method Definition
 
 ## Ignore ##
 ---------------------------------------------------------------------------------
-#	Comments
+#	Comments are ignored by the Interpreter and are only used for notation
 

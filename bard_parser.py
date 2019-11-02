@@ -46,9 +46,9 @@ class bard_parser:
 
 					if tok_value in ["=","+=","-=","*=","/="]:
 						return ((env.currentline+1, "Assignment", tok_prev,tok_next,tok_value,None))
-					elif tok_value in "+-*/^%==!==><=":
+					elif tok_value in "+-*/^%==!==><=|":
 						return ((env.currentline+1, "Operation", (tok_type,tok_value),tok_prev,tok_next,None))
-					elif tok_value in "&&||":
+					elif tok_value in ["&&","||"]:
 						return ((env.currentline+1,"Logical", (tok_type,tok_value),tok_prev,tok_next,None))
 			elif tok_value in ",])":
 				return tok_prev
@@ -65,6 +65,8 @@ class bard_parser:
 							codebody2=self.code_block(indent[0:len(indent)-1])
 							
 					if tok_prev[0]=="FUNCTION": action="Assignment"
+					#print()
+					#print("Code: ")
 					#pprint.pprint((currline,action,tok_prev,params,codebody1,codebody2))
 					return ((currline+1,action,tok_prev,params,codebody1,codebody2))
 				return self.function_params(tok_value)
@@ -102,15 +104,21 @@ class bard_parser:
 	def code_block(self,indent):
 		codebody=[]
 		temp=""
+		elsekywd=False
+		
 		try:
 			while True:
 				env.currentline+=1
-				temp=env.prog[env.currentline].strip()
-				if env.prog[env.currentline].strip()=="":		#Check whether current is a blank line
-					print("Blank: ",env.currentline)
+				#temp=env.prog[env.currentline].strip()
+				
+				if env.prog[env.currentline].strip()=="" or env.prog[env.currentline].strip()[0:1]=="#":	#Check whether current is a blank line
+					#print("Blank: ",env.currentline)
 					pass
-				elif env.prog[env.currentline][0:len(indent)]==indent: 
-					print("1")
+				elif env.prog[env.currentline][0:len(indent)]==indent and elsekywd==False: 
+					#print("1")
+					
+					if (env.prog[env.currentline].strip()[0:4]).upper()=="ELSE": elsekywd=True
+					
 					lex=bard_lex.bard_lex(env.prog[env.currentline])
 					p=bard_parser(lex.tokenize())
 
@@ -120,7 +128,7 @@ class bard_parser:
 						#print(funbody)
 						codebody.append(funbody)
 				else:
-					print("Break: ",env.currentline)
+					#print("Break: ",env.currentline)
 					env.currentline-=1
 
 					break

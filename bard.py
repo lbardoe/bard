@@ -19,7 +19,7 @@ import bard_lex
 import bard_parser
 import bard_env as env
 import bard_eval
-#import bard_ide
+import bard_ide
 import datetime
 
 def run(filename):
@@ -34,9 +34,9 @@ def interpreter():
 	#pass
 
 def ide():
-	#bard_ide.open_ide()
-	print("This feature is currently under developement.")
-	print()
+	bard_ide.open_ide()
+	#print("This feature is currently under developement.")
+	#print()
 	
 def err(e):
 	print(e)
