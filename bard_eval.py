@@ -22,9 +22,6 @@ class bard_eval:
 			return ("STRING",evalstr[1])
 		elif evalstr[0]=="IDENTIFIER":
 			try:
-				#if (evalstr[1])[0:1]=="$":
-				#	return env.env_global[evalstr[1]]
-				#el
 				if (evalstr[1])[0:1]=="_":
 					return self.eval_code((env.env_objects[evalstr[1]])[4][0])
 				else:
@@ -103,6 +100,8 @@ class bard_eval:
 						looplogic=self.eval_operation(("Operator",optype),self.eval_code(loopid),loopend)[1]
 					else:
 						looplogic=self.eval_code(evalstr[3][0])[1]
+
+				env.env_local[loopid[1]] = ("NUMBER",loopvalue-1)
 			elif evalstr[2][1]=="GET":
 				try:
 					caption=(self.eval_code(callval))[1]
@@ -179,8 +178,6 @@ class bard_eval:
 			if obj[0:1]=="_":
 				env.env_objects[obj]={"body" : args2,"params" : args1}
 				env.env_global[obj]={"type" : "function"}
-			#elif obj[0:1]=="$":
-			#	env.env_global[obj]=self.eval_code(args1)
 			else:
 				varobj=args1
 				
@@ -194,6 +191,10 @@ class bard_eval:
 							varvalue=origvalue+varvalue
 						elif args2=="-=":
 							varvalue=origvalue-varvalue
+						elif args2=="*=":
+							varvalue=origvalue*varvalue
+						elif args2=="/=":
+							varvalue=origvalue/varvalue
 							
 					varobj=("NUMBER",float(varvalue))
 					

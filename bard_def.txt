@@ -81,9 +81,13 @@ TRUE	True Statement
 FALSE	False Statement
 IF		If Statement
 ELSE	ElseIf or Else
-GET		Input
+GET		Gets Input from the User
+			get("Enter Name: ")	displays the Caption Enter Name: and awaits input from user
 PUT		Print to screen
+			put("test")			writes the word test to the screen
 LOOP	Loop (For or While)
+			loop(x,1,10)		For Loop will increment by 1 from 1 to 10 inclusive
+			loop(x<10)			While look will increment by 1 until x is no longer less than 10
 FILE	Open File
 WEB		Get File from Web Site
 NET		TCP/IP Network Connection
@@ -108,7 +112,10 @@ CASE 	STRING Case (Value,Param1)
 IMP		Import modules
 TYPE	Type of Object
 WAIT	Sleep number of seconds
+			wait(5)		pauses for 5 seconds
 ASCII 	Return either the Number of a Character or the Character of a Number
+			ascii("p")	returns 112
+			ascii(112)	returns p
 
 ## Operators ##
 ---------------------------------------------------------------------------------

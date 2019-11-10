@@ -40,7 +40,7 @@ def add_menus(win):
 
 	win.config(menu=menubar)
 
-def add_buttons(win,txt,cmd=None):
+def add_button(win,txt,cmd=None):
 	b=Button(win,text=txt,command=cmd)
 	b.pack()
 
@@ -53,9 +53,8 @@ def open_ide():
 	root.wm_title("BARD - IDE")
 	root.geometry("500x500")
 
-	a=msg("Hello")
 	add_menus(root)
-	add_buttons(root,"Test 1")
-	add_buttons(root,"Test 2")
+	add_button(root,"Test 1")
+	add_button(root,"Test 2")
 
 	root.mainloop()
