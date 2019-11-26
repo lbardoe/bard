@@ -37,12 +37,10 @@ WEB		Get File from Web Site
 NET		TCP/IP Network Connection
 MAIL	Send Email
 SFTP	Transfer File
-LEN		Length
-DATE	Date
-STR 	STRING (Value,param1,param2)
-NUM		NUMBER (Value,param1)
+DATE	Date and Time
 RTN		Return
 CASE 	STRING Case (Value,Param1)
+CAST	Casts a value to an different type ie String -> Int -> Date etc 
 IMP		Import modules
 TYPE	Type of Object
 WAIT	Sleep number of seconds
@@ -65,8 +63,6 @@ MAIL	Send Email
 SFTP	Transfer File
 LEN		Length
 DATE	Date
-STR 	STRING (Value,param1,param2)
-NUM		NUMBER (Value,param1)
 RTN		Return
 CASE 	STRING Case (Value,Param1)
 IMP		Import modules
@@ -95,18 +91,20 @@ MAIL	Send Email
 SFTP	Transfer File
 LEN		Length
 DATE	Date
-			d=Day(1-31) 		/ m=Month(1-12)		/ y=Year(xx)
-			D=Weekday(1-7) 		/ M=Month(Jan-Dec)	/ Y=Year(xxxx)
-			w=Week(1-52)		/ W=Weekday(Mo-Su)
-			h=Hour(1-12am/pm)	/ H=Hour(1-24)
-			n=Minutes(0-59)		/ s=Seconds(0-59)
-			l=LeapYear(True or False)
+			d=Day(1-31) 			/ m=Month(1-12)		
+			D=Weekday(Mon-Sun) 		/ M=Month(Jan-Dec)	
+			w=Weekday(0-6)			/ y=Year(xx)
+			j=Day of Year (0-365)	/ Y=Year(xxxx)
+			W=Week(1-52)			/ p=AM or PM
+			h=Hour(1-12)			/ H=Hour(1-24)
+			n=Minutes(0-59)			/ s=Seconds(0-59)
 STR 	STRING (Value,param1,param2)
 NUM		NUMBER (Value,param1)
 			Param1 = NUMBER of Decumal Places 
 			0 = Integer 
 			1+ = Float 
 			Negative NUMBERs = Absolute Floats
+CAST	
 RTN		Return
 CASE 	STRING Case (Value,Param1)
 IMP		Import modules
@@ -116,6 +114,32 @@ WAIT	Sleep number of seconds
 ASCII 	Return either the Number of a Character or the Character of a Number
 			ascii("p")	returns 112
 			ascii(112)	returns p
+
+Variable Functions
+		variables can be treated to act as Functions by using Parentheses after the Variable Identifier to perform actions:-
+		All values returned by the function are as Strings apart from Length and Position.
+		Positions start at 1 rather than 0.
+		All Variable Types:
+			a() 		returns the length of the String as a number = 12
+		Strings:
+			a="Hello World!"
+			a(1) 		returns the Left most characters = "H"
+			a(-1)		returns the Right most characters = "!"
+			a(2,1)		returns the mid range of characters = "el"
+			a("ll") 	returns the start position of the characters entered = 3
+			a("j")		returns zero if unable to locate the value = 0
+			a("l","a") 	replaces all occurances of the first parameter with the second = "Heaao Worad!"
+		Numbers:
+			a=1512.56
+			a("0") 		returns any number as a whole integer rounded down	= 1512
+			a("000000")	returns the number with padded zeros at the start	= 001512.56
+			a("0.000") 	returns the number to 3 decimal places	=	1512.560
+			a(",0.00")	returns the number with seperators = 1,512.56
+			a("b")		returns the number in Binary	=	10111101000
+			a("x")		returns the number in HexiDecimal	=	5e8
+		Dates:
+			
+
 
 ## Operators ##
 ---------------------------------------------------------------------------------

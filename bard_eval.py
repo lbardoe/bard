@@ -3,6 +3,7 @@ import bard_env as env
 import datetime
 import time
 import pprint
+import re
 
 class bard_eval:
 	def __init__(self):
@@ -10,7 +11,7 @@ class bard_eval:
 		self.loopincrem=0
 		
 	def eval_code(self,evalstr):
-		#if env.env_debug==True: print("AST: ",evalstr)
+		if env.env_debug==True: print("AST: ",evalstr)
 		
 		if evalstr is None:
 			return None
@@ -53,7 +54,15 @@ class bard_eval:
 			elif evalstr[2][1]=="TYPE":
 				return (callval[1],callval[0])
 			elif evalstr[2][1]=="DATE":
-				return ("DateTime",datetime.datetime.now())
+				if evalstr[3]==[None] or evalstr[3]==None:
+					return ("DateTime",datetime.datetime.now())
+				else:
+					dt=[0,0,0,0,0,0]
+					
+					for x in range(6):
+						dt[x]=int((evalstr[3][x])[1])
+						
+					return ("DateTime",datetime.datetime(dt[0],dt[1],dt[2],dt[3],dt[4],dt[5]))
 			elif evalstr[2][1]=="RTN":
 				return self.eval_code(callval)
 			elif evalstr[2][1] in ["IF","ELSE"]:
@@ -123,7 +132,87 @@ class bard_eval:
 						
 				return self.eval_codebody(funcbody)
 			else:
-				return None
+				objtype,objval=self.eval_code(evalstr[2])
+
+				if evalstr[3]==[None] or evalstr[3]==None:
+					return ("NUMBER",len(str(objval)))
+				else:
+					if len(evalstr[3])>0: val1=self.eval_code(evalstr[3][0])[1]
+					if len(evalstr[3])>1: val2=self.eval_code(evalstr[3][1])[1]
+											
+					if objtype=="DateTime":
+						val1=val1.replace("d","%d")		#Day 			1-31
+						val1=val1.replace("D","%a")		#Weekday 		Mon-Sun
+						val1=val1.replace("w","%w")		#Weekday 		0-6 (Sun-Sat)
+						val1=val1.replace("j","%j")		#Day of Year	365
+						val1=val1.replace("W","%W")		#Week 			1-52
+						val1=val1.replace("m","%m")		#Month			1-12
+						val1=val1.replace("M","%b")		#Month			Jan-Dec
+						val1=val1.replace("y","%y")		#Year			19
+						val1=val1.replace("Y","%Y")		#Year			2019
+						val1=val1.replace("p","%p")		#12 Hour AM/PM	AM
+						val1=val1.replace("H","%I")		#Hour			1-12 (12 Hour)
+						val1=val1.replace("h","%H")		#Hour			1-24 (24 Hour)
+						val1=val1.replace("n","%M")		#Minute			0-59
+						val1=val1.replace("s","%S")		#Second			0-59
+						
+						return ("STRING",objval.strftime(val1))
+					elif objtype=="STRING":
+						if (evalstr[3][0])[0]=="NUMBER":	
+							if len(evalstr[3])==1:
+								val1=int(val1)
+								#val1=0
+
+							if len(evalstr[3])>1:
+								val1=val2-1
+								val2=int(self.eval_code(evalstr[3][1])[1])
+							
+							if val1<0:
+								return ("STRING",(objval)[val1:])
+							else:
+								return ("STRING",(objval)[val1:val1+val2])
+						else:
+							if len(evalstr[3])==1:
+								return ("NUMBER",objval.find(val1)+1)
+							else:
+								return ("STRING",objval.replace(val1,val2))
+					elif objtype=="NUMBER":
+						lind=""
+						lpad=""
+						comma=""
+						dot=""
+						rpad=""
+						rind=""
+						
+						if val1.find(",")>-1: comma=","
+						if val1.find(".")>-1: 
+							lpad="0" + str(len(val1[0:val1.find(".")]))
+							rpad=str(len(val1[val1.find(".")+1:len(val1)])) + "f"
+							dot="."
+						else:
+							lpad="0"
+							objval=int(objval)
+				
+						if val1=="b": 
+							lpad="b" 
+							rpad=""
+							objval=int(objval)
+							
+						if val1=="h": 
+							lpad="x"
+							rpad=""
+							objval=int(objval)
+						
+						if "%" in val1: 
+							rind="%"	
+							
+						strformat="{:" + lpad + comma + dot + rpad + "}"
+
+						return ("STRING",lind+strformat.format(objval)+rind)	
+					else:
+						pass
+					
+				return objval
 		else:
 			return evalstr
 

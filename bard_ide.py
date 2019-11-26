@@ -11,8 +11,8 @@ def add_menus(win):
 	filemenu = Menu(menubar, tearoff=0)
 	filemenu.add_command(label="New", command=donothing)
 	filemenu.add_command(label="Open", command=donothing)
-	filemenu.add_command(label="Save", command=donothing)
-	filemenu.add_command(label="Save as...", command=donothing)
+	filemenu.add_command(label="Save", command=donothing, state="disabled")
+	filemenu.add_command(label="Save as...", command=donothing, state="disabled")
 	filemenu.add_command(label="Close", command=donothing)
 	filemenu.add_separator()
 	filemenu.add_command(label="Exit", command=win.quit)
@@ -21,11 +21,11 @@ def add_menus(win):
 	
 	#Add Edit Menu Drop Down
 	editmenu = Menu(menubar, tearoff=0)
-	editmenu.add_command(label="Undo", command=donothing)
+	editmenu.add_command(label="Undo", command=donothing, state="disabled")
 	editmenu.add_separator()
-	editmenu.add_command(label="Cut", command=donothing)
-	editmenu.add_command(label="Copy", command=donothing)
-	editmenu.add_command(label="Paste", command=donothing)
+	editmenu.add_command(label="Cut", command=donothing, state="disabled")
+	editmenu.add_command(label="Copy", command=donothing, state="disabled")
+	editmenu.add_command(label="Paste", command=donothing, state="disabled")
 	editmenu.add_command(label="Delete", command=donothing)
 	editmenu.add_command(label="Select All", command=donothing)
 

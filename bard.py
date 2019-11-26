@@ -24,7 +24,6 @@
 #  
 
 #Import additional Python Objects.
-import re
 import os
 import sys
 

@@ -73,6 +73,7 @@ class bard_lex():
 					if float(rtn_value):
 						pass
 					rtn_type="NUMBER"
+					#rtn_value=float(rtn_value)
 				except:
 					#if rtn_value[0:1]=="_":
 					#	rtn_type="FUNCTION"
