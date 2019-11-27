@@ -11,7 +11,7 @@ class bard_eval:
 		self.loopincrem=0
 		
 	def eval_code(self,evalstr):
-		if env.env_debug==True: print("AST: ",evalstr)
+		#if env.env_debug==True: print("AST: ",evalstr)
 		
 		if evalstr is None:
 			return None
@@ -71,6 +71,7 @@ class bard_eval:
 				else:
 					self.eval_codebody(evalstr[5])
 			elif evalstr[2][1]=="LOOP":
+				#print("Test")
 				#pprint.pprint(evalstr)
 				if len(evalstr[3])==4:
 					loopincrement=int((evalstr[3][3])[1])
@@ -161,7 +162,6 @@ class bard_eval:
 						if (evalstr[3][0])[0]=="NUMBER":	
 							if len(evalstr[3])==1:
 								val1=int(val1)
-								#val1=0
 
 							if len(evalstr[3])>1:
 								val1=val2-1
@@ -173,7 +173,12 @@ class bard_eval:
 								return ("STRING",(objval)[val1:val1+val2])
 						else:
 							if len(evalstr[3])==1:
-								return ("NUMBER",objval.find(val1)+1)
+								regex=re.search(val1,objval)
+								
+								if regex.group()==val1:
+									return ("NUMBER",regex.start()+1)
+								else:
+									return("STRING",regex.group())
 							else:
 								return ("STRING",objval.replace(val1,val2))
 					elif objtype=="NUMBER":

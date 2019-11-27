@@ -60,14 +60,13 @@ class bard_parser:
 				elif tok_prev[0] in "KEYWORD,IDENTIFIER,FUNCTION":
 					if tok_prev[1] in ["IF","ELSE","LOOP"] or tok_prev[0]=="FUNCTION":
 						codebody1=self.code_block(indent)
-
-						if env.prog[env.currentline+1].strip()[0:4].upper()=="ELSE":
-							codebody2=self.code_block(indent[0:len(indent)-1])
-							
+					
+						if env.currentline<len(env.prog):
+							if env.prog[env.currentline+1].strip()[0:4].upper()=="ELSE":
+								codebody2=self.code_block(indent[0:len(indent)-1])
+												
 					if tok_prev[0]=="FUNCTION": action="Assignment"
-					#print()
-					#print("Code: ")
-					#pprint.pprint((currline,action,tok_prev,params,codebody1,codebody2))
+
 					return ((currline+1,action,tok_prev,params,codebody1,codebody2))
 				return self.function_params(tok_value)
 			else:

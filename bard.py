@@ -24,9 +24,9 @@
 #  
 
 #Import additional Python Objects.
-import os
+import os, fnmatch
 import sys
-
+import datetime
 import pprint
 
 #Import the Elements of the Bard Interpreter.
@@ -35,23 +35,67 @@ import bard_parser
 import bard_env as env
 import bard_eval
 import bard_ide
-import datetime
+import bard_run
 
-def run(filename):
+def loadfile(filename):
 	"""This function is used to run 2b files for the BARD Interpreter."""
 	with open(filename,"r") as fn:
 		for line in fn:
 			env.prog.append(line)
+
+	bard_run.run()
 	
 def interpreter():
-	print("This feature is currently under developement.")
+	print("BARD Programming Language. (Basic And Reduced Definition).\nVersion : " + env.version + " on " + sys.platform + "\n\nType Help or ? for Assistance or Quit/Exit/Q or E to exit.")
 	print()
-	#pass
+	
+	intvalue=""
+	
+	while intvalue not in ["q","Q","Quit","quit","Exit","exit"]:
+		intvalue=input("-->")
+
+		if intvalue.upper()[0:4]=="LIST":
+			print("Num. : Code")
+			
+			for x in range(len(env.prog)):
+				print("{: 4}".format(x+1) + " : " +env.prog[x].rstrip())
+		elif intvalue.upper()[0:3]=="RUN":
+			env.currentline=0
+			bard_run.run()
+		elif intvalue.upper()[0:4]=="HELP" or intvalue[0]=="?":
+			print("Interpreter Keywords:")
+			print("-------------------------------------")
+			
+			for x in range(len(env.inter_kywd)):
+				print(">> " + env.inter_kywd[x])
+				
+			print("\n")
+			print("Language Keywords:")
+			print("-------------------------------------")
+			
+			for x in range(len(env.token_kywd)):
+				print(">> " + env.token_kywd[x])
+			
+			print("\n")
+		elif intvalue.upper()[0:3]=="DEL":
+			env.prog=[]
+		elif intvalue.upper()[0:4]=="LOAD":
+			vfile=intvalue[4:len(intvalue)].strip()
+			vfiles=fnmatch.filter(os.listdir("."),vfile + "*.2b")
+			
+			for x in range(len(vfiles)):
+				print(">> " + vfiles[x])
+				
+			if len(vfiles)==1:
+				loadfile(vfiles[x])
+		else:
+			env.prog.append(intvalue + "\n")
+			env.currentline=len(env.prog)-1
+		
+			bard_run.run()
 
 def ide():
 	bard_ide.open_ide()
-	#print("This feature is currently under developement.")
-	#print()
 	
 def err(e):
 	print(e)
@@ -59,43 +103,14 @@ def err(e):
 if len(sys.argv)==1:
 	interpreter()
 else:
-	if sys.argv[1]=="/d": 
+	if sys.argv[1]=="/d": 	#Debugging
 		env.env_debug=True
-		run(sys.argv[len(sys.argv)-1])
-	elif sys.argv[1]=="/l":
+		loadfile(sys.argv[len(sys.argv)-1])
+	elif sys.argv[1]=="/l":	#Logging
 		print("This feature is currently under developement.")
 		print()
-	elif sys.argv[1]=="/i":
+	elif sys.argv[1]=="/i":	#IDE
 		ide()
-	else:
-		run(sys.argv[len(sys.argv)-1])
+	else:					#Load File Only
+		loadfile(sys.argv[len(sys.argv)-1])
 	
-#run("example1.2b")
-#run("example2.2b")
-#run("example3.2b")
-#run("example4.2b")
-
-
-if env.env_debug==True:
-	print("-->Program Start: {}".format(datetime.datetime.now()) + "\n")
-
-while env.currentline < len(env.prog):
-	lexer = bard_lex.bard_lex(env.prog[env.currentline])
-	parser=bard_parser.bard_parser(lexer.tokenize())
-
-	a=parser.parsetoken(None)
-
-	if type(a)==tuple:
-		codeev=bard_eval.bard_eval()
-		codeev.eval_code(a) #[1]
-
-	env.currentline+=1
-
-if env.env_debug==True:
-	print("\n")
-	print("-->Number of Keywords: ",len(env.token_kywd))
-	print("-->Globals: ",env.env_global)
-	print("-->Locals : ",env.env_local)
-	#print("Objects: ",env.env_objects)
-	print("\n-->Program End: {}".format(datetime.datetime.now()))
-

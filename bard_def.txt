@@ -1,6 +1,6 @@
 ## Interface ##
 
-To use this Interpreter use the below commands
+To run this Interpreter use the below commands
 
 ## Commands ##
 ---------------------------------------------------------------------------------
@@ -20,6 +20,20 @@ No Arguments Given
 	
 <filename>
 	This will run the file listed 
+
+
+## Interpreter Commands ##
+---------------------------------------------------------------------------------
+
+LIST		Lists the Code Buffer.
+SAVE		Saves the Code Buffer to a file.
+LOAD		Loads the Code Buffer from a file.
+EXIT or E	Exits the Interpreter.
+QUIT or Q	Exits the Interpreter.
+HELP or ?	Provides help on a given command or all commands.
+DEL			Deletes a specific line from the Code Buffer or Clears the buffer if no line supplied.
+RUN			Runs the Code Buffer at any given line or from the start if none supplied.
+
 
 # Syntax and Code Definition
 
@@ -129,6 +143,9 @@ Variable Functions
 			a("ll") 	returns the start position of the characters entered = 3
 			a("j")		returns zero if unable to locate the value = 0
 			a("l","a") 	replaces all occurances of the first parameter with the second = "Heaao Worad!"
+			
+			Regular Expressions:
+				a("[A-Z][a-z]{4}")	returns the word "Hello"
 		Numbers:
 			a=1512.56
 			a("0") 		returns any number as a whole integer rounded down	= 1512
