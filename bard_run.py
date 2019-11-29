@@ -19,11 +19,17 @@ def run():
 		lexer = bard_lex.bard_lex(env.prog[env.currentline])
 		parser=bard_parser.bard_parser(lexer.tokenize())
 
-		a=parser.parsetoken(None)
+		parsercode=parser.parsetoken(None)
 
-		if type(a)==tuple:
+		if type(parsercode)==tuple:
+			#if env.env_debug==True:
+			#	command=input("-->")
+			#	
+			#	if command.upper()=="Q":
+			#		break
+
 			codeev=bard_eval.bard_eval()
-			codeev.eval_code(a) 
+			codeev.eval_code(parsercode) 
 
 		env.currentline+=1
 

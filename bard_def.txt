@@ -33,11 +33,23 @@ QUIT or Q	Exits the Interpreter.
 HELP or ?	Provides help on a given command or all commands.
 DEL			Deletes a specific line from the Code Buffer or Clears the buffer if no line supplied.
 RUN			Runs the Code Buffer at any given line or from the start if none supplied.
+COMPILE		Not yet Built to build a file into a C program and then use GCC to compile an Executable.
+IDE			Opens the IDE from the Interpreter.
+DIR			Displays a list of files in the working directory for *.2b extension.
 
+## Debugging Commands ##
+---------------------------------------------------------------------------------
+LIST		Lists the Code Buffer.
+B			Set Breakpoints. 
+D			Delete Breakpoints.	
+>>			Goto Next Breakpoint.
+<<			Goto Previous Breakpoint.
+>			Advance 1 Line of Code.
+<			Retreat 1 Line of Code.
+Q			Quit Debugger.
+*			Denotes Breakpoint when listing Code Buffer.
 
-# Syntax and Code Definition
-
-## Keywords ##
+## Language Keywords ##
 ---------------------------------------------------------------------------------
 TRUE	True Statement
 FALSE	False Statement

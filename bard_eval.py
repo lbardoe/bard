@@ -134,12 +134,13 @@ class bard_eval:
 				return self.eval_codebody(funcbody)
 			else:
 				objtype,objval=self.eval_code(evalstr[2])
-
-				if evalstr[3]==[None] or evalstr[3]==None:
+				params=evalstr[3]
+				
+				if params==[None] or params==None:
 					return ("NUMBER",len(str(objval)))
 				else:
-					if len(evalstr[3])>0: val1=self.eval_code(evalstr[3][0])[1]
-					if len(evalstr[3])>1: val2=self.eval_code(evalstr[3][1])[1]
+					if len(params)>0: val1=self.eval_code(evalstr[3][0])[1]
+					if len(params)>1: val2=self.eval_code(evalstr[3][1])[1]
 											
 					if objtype=="DateTime":
 						val1=val1.replace("d","%d")		#Day 			1-31
@@ -160,17 +161,13 @@ class bard_eval:
 						return ("STRING",objval.strftime(val1))
 					elif objtype=="STRING":
 						if (evalstr[3][0])[0]=="NUMBER":	
-							if len(evalstr[3])==1:
-								val1=int(val1)
-
-							if len(evalstr[3])>1:
-								val1=val2-1
-								val2=int(self.eval_code(evalstr[3][1])[1])
-							
-							if val1<0:
-								return ("STRING",(objval)[val1:])
-							else:
-								return ("STRING",(objval)[val1:val1+val2])
+							if len(params)==1:
+								if val1<0:		# Right String
+									return ("STRING",objval[int(val1):])
+								else:			# Left String
+									return ("STRING",objval[:int(val1)])
+							else:				# Mid String								
+								return ("STRING",objval[int(val1)-1:(int(val1)-1)+int(val2)])
 						else:
 							if len(evalstr[3])==1:
 								regex=re.search(val1,objval)
@@ -182,38 +179,30 @@ class bard_eval:
 							else:
 								return ("STRING",objval.replace(val1,val2))
 					elif objtype=="NUMBER":
-						lind=""
-						lpad=""
-						comma=""
-						dot=""
-						rpad=""
-						rind=""
+						objval=int(objval)
+						strformat="{:"
 						
-						if val1.find(",")>-1: comma=","
-						if val1.find(".")>-1: 
-							lpad="0" + str(len(val1[0:val1.find(".")]))
-							rpad=str(len(val1[val1.find(".")+1:len(val1)])) + "f"
-							dot="."
-						else:
-							lpad="0"
-							objval=int(objval)
-				
-						if val1=="b": 
-							lpad="b" 
-							rpad=""
-							objval=int(objval)
-							
-						if val1=="h": 
-							lpad="x"
-							rpad=""
-							objval=int(objval)
+						if "h" in val1:					# Hexidecimal Format
+							strformat+="x"
+						elif "b" in val1:				# Binary Format
+							strformat+="b"
+						else:							# Decimal Integer or Float Formats
+							if val1.find(",")>-1: 
+								strformat+=","
+								val1=val1.replace(",","")
+								
+							if val1.find(".")>-1: 
+								val1,val2=val1.split(".")
+								
+								if len(val1)>1: strformat+="0" + str(len(val1)+len(val2)+1)
+									
+								strformat+="." + str(len(val2)) + "f"
+							else:
+								if len(val1)>1: strformat+="0" + str(len(val1))
 						
-						if "%" in val1: 
-							rind="%"	
-							
-						strformat="{:" + lpad + comma + dot + rpad + "}"
+						strformat+="}"
 
-						return ("STRING",lind+strformat.format(objval)+rind)	
+						return ("STRING",strformat.format(objval))	
 					else:
 						pass
 					
@@ -223,7 +212,7 @@ class bard_eval:
 
 	def eval_operation(self,op,arg1,arg2):
 		result=""
-		#print("OP: ",op,arg1,arg2)
+	
 		if arg1[0]!=arg2[0]:
 			argleft=str(arg1[1])
 			argright=str(arg2[1])
